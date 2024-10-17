@@ -1,0 +1,24 @@
+stages:
+  - build
+  - test
+  - deploy
+
+build:
+  stage: build
+  script:
+    - docker build -t myapp .
+
+test:
+  stage: test
+  script:
+    # Run unit tests (replace with appropriate test commands)
+    - npm install
+    - npm test
+
+deploy:
+  stage: deploy
+  script:
+    # Log in to Docker registry (make sure credentials are set up)
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+    - docker tag myapp $CI_REGISTRY/myapp:latest
+    - docker push $CI_REGISTRY/myapp:latest
